@@ -10,7 +10,7 @@ function getMessages(auth) {
                 "INBOX",
             ]
         }, (err, res) => {
-            if (err) return reject(err);
+            if (err) reject(err);
 
             const messages = res.data.messages;
 
