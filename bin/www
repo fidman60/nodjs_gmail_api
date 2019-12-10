@@ -7,25 +7,34 @@
 var app = require('../app');
 var debug = require('debug')('gmail-chat-api:server');
 var http = require('http');
+var https = require('https');
+var fs = require('fs');
+
+var privateKey  = fs.readFileSync('/opt/psa/var/certificates/scfze3ulZ', 'utf8');
+var certificate = fs.readFileSync('/opt/psa/var/certificates/scfMRSpFH', 'utf8');
+
+var credentials = {key: privateKey, cert: certificate};
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '3001');
 app.set('port', port);
 
 /**
- * Create HTTP server.
+ * Create HTTP and HTTPS server.
  */
 
 var server = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
 server.listen(port);
+httpsServer.listen(8443);
 server.on('error', onError);
 server.on('listening', onListening);
 
